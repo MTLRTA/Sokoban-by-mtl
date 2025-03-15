@@ -1,32 +1,47 @@
-#gamelevel {
+#gamelevel {/*отображение стилей уровня(ширина, длина, контур)*/
+    position: absolute;
+    display: flex;
+    top: 25%;
+    left:30%;
     display: grid;
-    grid-template-columns: repeat(5, 50px);
-    grid-template-rows: repeat(10, 50px);
-
+    grid-template-columns: repeat(9 , 50px);
+    grid-template-rows: repeat(9, 50px); 
     border: 1px solid black;
+    
 }
 
-.wall{
-
-    background-color: gray;
+.wall {
+    background-image: url('textures/tex1.jpg'); /*в качестве текстуры стен использую фотку */
+    background-size: cover;
 }
 
-.box{
-
-    background-color: brown;
+.box {
+    position: relative;/* относительное положение элемента, вместе с overflow: hidden; позволяет затемнить только внутреннюю часть коробки, а не весь экран */
+    background-image: url('textures/tex2.jpg'); 
+    background-size: cover;
+    overflow: hidden;
 }
 
-.target{
+.box::after{/* Этот код делает светлые коробки немного темнее. */
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.1);
+    z-index: 1;/*определяет темную заливку, выше слоя с самой коробкой*/
+}
 
+.target {
     background-color: lightgreen;
 }
 
-.player{
-
-    background-color: purple;
+.player {
+    background-image: url('textures/tex3.jpg');
+    background-size: cover;
 }
 
-.box-on-target{
-
-    background-color: darkgreen;
+.empty {
+    background-color: white;
 }
