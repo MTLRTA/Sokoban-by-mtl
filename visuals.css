@@ -1,0 +1,32 @@
+#gamelevel {
+    display: grid;
+    grid-template-columns: repeat(5, 50px);
+    grid-template-rows: repeat(10, 50px);
+
+    border: 1px solid black;
+}
+
+.wall{
+
+    background-color: gray;
+}
+
+.box{
+
+    background-color: brown;
+}
+
+.target{
+
+    background-color: lightgreen;
+}
+
+.player{
+
+    background-color: purple;
+}
+
+.box-on-target{
+
+    background-color: darkgreen;
+}
