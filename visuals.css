@@ -1,3 +1,12 @@
+body {
+    padding-top: 20px; 
+    height: 100vh;
+    background: rgb(255,255,255);
+    background: linear-gradient(0deg, rgba(255,255,255,1) 0%, rgba(193,193,193,1) 15%, rgba(0,0,0,1) 71%, rgba(0,0,0,1) 100%);
+    
+}
+
+
 #gamelevel {/*отображение стилей уровня(ширина, длина, контур)*/
     position: absolute;
     display: flex;
@@ -44,4 +53,59 @@
 
 .empty {
     background-color: white;
+}
+
+
+.text1 {
+    font-family: Tahoma;
+    font-size: 100px;
+    letter-spacing: -1.5px;
+    word-spacing: 0px;
+    font-weight: bold;
+    background-image: url('textures/textbg1.png');
+    background-size: repeat; 
+    background-clip: text; /* Фон будет обрезан вне текстка */
+    color: transparent; /* Сам текст прозрачный */
+    overflow: hidden;
+    position: absolute;
+    left: 28.5%; 
+    animation: rotate 20s linear infinite, move1 4s ease-in-out infinite;
+}
+
+.text1-shadow {
+    font-family: Tahoma;
+    font-size: 100px;
+    letter-spacing: -1.5px;
+    word-spacing: 0px;
+    font-weight: bold;
+    color: rgba(0, 0, 0, 1);
+    position: absolute;
+    left: 28.5%; 
+    filter: blur(5px); 
+    z-index: -1; 
+    animation:  move1 4s ease-in-out infinite;
+}
+
+
+
+
+@keyframes rotate {
+    from {
+        background-position: 100% 100%;
+    }
+    to {
+        background-position: 0% 0%;
+    }
+}
+
+@keyframes move1 {
+    0% {
+        transform: translateY(0); /* Начальная позиция */
+    }
+    50% {
+        transform: translateY(-5px); /* Перемещение вверх */
+    }
+    100% {
+        transform: translateY(0); /* Возвращение в начальную позицию */
+    }
 }
