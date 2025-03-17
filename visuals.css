@@ -3,17 +3,31 @@ body {
     margin: 0px; 
     height: 100vh;
     width: 100vw;
-    background: rgb(255,255,255);
-    background: linear-gradient(0deg, rgba(255,255,255,1) 50%, rgba(0,0,0,1) 50%);
+    background: rgb(0, 0, 0);
+    
     overflow:hidden;
     background-repeat: no-repeat;
     background-size: cover;
 }
 
 
+.headline{
+position:absolute;
+top:0px;
+width: 100%;
+height:22.5%;
+overflow: hidden;
+z-index: -2;
+opacity: 0.4;
 
 
+}
+img {
+    max-width: 100%;           
+    height: auto;       
+    display: block;
 
+}
 
 
 
@@ -25,10 +39,13 @@ body {
     left: 28.3%;
     grid-template-columns: repeat(9, 55px);
     grid-template-rows: repeat(9, 55px); 
-    border: 1px solid black; 
+    border: 1px solid rgb(255, 255, 255); 
     opacity: 0; 
     animation: slideIn 1s ease-in-out forwards, fadein 1s ease forwards; 
+    box-shadow: 0 0px 30px rgba(255, 255, 255, 0.5);
+    
 }
+
 
 @keyframes fadein {
     0% {
@@ -95,11 +112,25 @@ body {
 }
 
 .empty {
-    background-color: white;
+    position: relative; 
+    background-image: url('textures/tex1.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+
 }
 
+.empty::after{
 
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 1;/*определяет темную заливку, выше слоя с самой коробкой*/
 
+}
 
 
 
@@ -162,7 +193,8 @@ body {
     position: absolute;
     background-color: rgb(0, 0, 0);
     border-radius: 50%;
-    filter: blur(10px);
+    border: 2px solid white;
+    filter: blur(1px);
     
     animation: float 5s linear infinite, fadeIn 5s ease;
     z-index: -1;
