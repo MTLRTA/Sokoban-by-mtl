@@ -1,10 +1,9 @@
-const boardSize = 5;
-
-const wall = 1;   
-const box = 2;    
-const target = 3; 
-const player = 4; 
-const empty = 0;  
+const boardSize = 9; 
+const wall = 1;
+const box = 2;
+const target = 3;
+const player = 4;
+const empty = 0;
 
 const Level = [
     wall, wall, wall, wall, wall, empty, empty, empty, empty,
@@ -20,31 +19,107 @@ const Level = [
 
 const board = document.getElementById('gamelevel');
 
-function drawLevel() {/* Метод для построения сетки уровня путем перебора каждого элемента*/
-    Level.forEach((cell) => {
-        const cellDiv = document.createElement('div');
+function drawLevel() {
+    board.innerHTML = ''; 
+    Level.forEach((square) => {
+        const sqDiv = document.createElement('div');
 
-        switch (cell) {
+        switch (square) {
             case wall:
-                cellDiv.classList.add('wall');
+                sqDiv.classList.add('wall');
                 break;
             case box:
-                cellDiv.classList.add('box');
+                sqDiv.classList.add('box');
                 break;
             case target:
-                cellDiv.classList.add('target');
+                sqDiv.classList.add('target');
                 break;
             case player:
-                cellDiv.classList.add('player');
+                sqDiv.classList.add('player');
                 break;
             case empty:
-                cellDiv.classList.add('empty');
+                sqDiv.classList.add('empty');
                 break;    
         }
 
-        board.appendChild(cellDiv);
+        board.appendChild(sqDiv);
     });
 }
 
-drawLevel();//вызов отрисовки уровня
+drawLevel();
+
+function movePlayer(dirstep) {
+    const currentPlayerIndex = Level.indexOf(player);
+    let targetIndex;
+
+    switch (dirstep) {
+        case 'ArrowUp':
+            targetIndex = currentPlayerIndex - boardSize; 
+            break;
+        case 'ArrowDown':
+            targetIndex = currentPlayerIndex + boardSize; 
+            break;
+        case 'ArrowLeft':
+            targetIndex = currentPlayerIndex - 1;
+            break;
+        case 'ArrowRight':
+            targetIndex = currentPlayerIndex + 1; 
+            break;
+        default:
+            console.log('Nepravilnaya klavisha! Ispolsuy strelochki.');
+            return;
+    }
+    
+
+
+
+    if (
+        Level[targetIndex] === empty || Level[targetIndex] === target
+        )
+        
+        
+    {
+        Level[currentPlayerIndex] = empty; 
+        Level[targetIndex] = player; 
+    } 
+    
+    
+    else if (Level[targetIndex] === box) 
+    {
+        const nextBoxIndex = targetIndex + (targetIndex - currentPlayerIndex); 
+        
+        if (
+            
+            Level[nextBoxIndex] === empty
+            )
+        
+        {
+            Level[nextBoxIndex] = box; 
+            Level[currentPlayerIndex] = empty; 
+            Level[targetIndex] = player; 
+        } 
+        
+        else
+        {
+            console.log('Korobka vo chto-to uperlas!');
+        }
+    } 
+    
+    else 
+    {
+        console.log('Nevozmojno dvigatsa(((');
+    }
+
+    
+    drawLevel(); 
+
+}
+
+
+
+
+document.addEventListener('keydown', (event) => {
+    movePlayer(event.key); 
+});
+
 
