@@ -141,9 +141,11 @@ let count = 0;
 const counter = document.getElementById('steps');
 
 function scounter(){
+    if (event.key.startsWith('Arrow')){
     count++;
 
     counter.textContent = count;
+}
 
 };
 
