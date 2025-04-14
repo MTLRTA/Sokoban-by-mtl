@@ -102,7 +102,7 @@ img {
     z-index: 1;/*определяет темную заливку, выше слоя с самой коробкой*/
 }
 
-.target {
+.finish {
     background-color: lightgreen;
 }
 
