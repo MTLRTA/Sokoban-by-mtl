@@ -102,6 +102,30 @@ img {
     z-index: 1;/*определяет темную заливку, выше слоя с самой коробкой*/
 }
 
+
+
+.boxFinished {
+    position: relative;
+    background-image: url('textures/tex2.jpg'); 
+    background-size: cover;
+    overflow: hidden;
+}
+
+.boxFinished::after{
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(255, 0, 0, 0.203);
+    z-index: 1;
+}
+
+
+
+
+
 .finish {
     background-color: lightgreen;
 }
@@ -221,4 +245,29 @@ img {
     100% {
         opacity: 0; 
     }
+}
+
+
+#timer {
+
+    position:absolute;
+    top: 50vh;
+    left: 80vw;
+    font-size: 55px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: aliceblue;
+    font-weight: bold;
+
+}
+
+#steps {
+
+    position:absolute;
+    top: 60vh;
+    left: 84.4vw;
+    font-size: 55px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: aliceblue;
+    font-weight: bold;
+
 }

@@ -2,6 +2,7 @@ const boardSize = 9; // высота доски
 const wall = 1;
 const box = 2;
 const finish = 3;
+const boxFinished = 5; // новое значение для коробки на финише
 const player = 4;
 const empty = 0; // обозначения всех элементов
 
@@ -20,13 +21,16 @@ const Level = [
 const board = document.getElementById('gamelevel'); // получение элемента gamelevel из html документа
 
 function drawSquare(index) { // функция для построения сетки уровня
-    const sqDiv = document.createElement('div'); // создает div и на основе елемента в массива, ставит в div соответствующий элемент
+    const sqDiv = document.createElement('div'); // создает div и на основе элемента в массива, ставит в div соответствующий элемент
     switch (Level[index]) {
         case wall:
             sqDiv.classList.add('wall');
             break;
         case box:
             sqDiv.classList.add('box');
+            break;
+        case boxFinished:
+            sqDiv.classList.add('boxFinished'); 
             break;
         case finish:
             sqDiv.classList.add('finish');
@@ -56,7 +60,7 @@ function updateSquare(index) { // Функция для обновления я�
 }
 
 function movePlayer(step) { // движение игрока
-    const currentPlayerIndex = Level.indexOf(player);// получение актуального индекса
+    const currentPlayerIndex = Level.indexOf(player); // получение актуального индекса
     let targetIndex;
 
     switch (step) {
@@ -77,36 +81,41 @@ function movePlayer(step) { // движение игрока
             return;
     }
 
-    const targetCell = Level[targetIndex]; // определение целевой ячейки
-    const nextBoxIndex = targetIndex + (targetIndex - currentPlayerIndex); // вычисление индекса ячейки в которую будет перемещена коробка
 
-    const actions = { // блок для обработки взаимодействий с ячейками
-        [empty]: () => { // передвижение игрока с обновлением ячеек
+    const targetCell = Level[targetIndex]; // определение целевой ячейки
+    const nextBoxIndex = targetIndex + (targetIndex - currentPlayerIndex); // вычисление индекса ячейки, в которую будет перемещена коробка
+
+    const actions = {
+        [empty]: () => {
             Level[currentPlayerIndex] = empty; 
             Level[targetIndex] = player; 
             updateSquare(currentPlayerIndex);
             updateSquare(targetIndex);
         },
-        [box]: () => { // передвижение игрока и коробки с обновлением ячеек
-            if (Level[nextBoxIndex] === empty || Level[nextBoxIndex] === finish) { // проверяем возможность перемещения коробки
+        [box]: () => {
+            if (Level[nextBoxIndex] === empty || Level[nextBoxIndex] === finish) {
                 Level[currentPlayerIndex] = empty; 
                 Level[targetIndex] = player; 
-                Level[nextBoxIndex] = box; 
+
+                if (Level[nextBoxIndex] === finish) {
+                    Level[nextBoxIndex] = boxFinished; // клетка куда будет перемещена коробка заменяется на boxFinished
+                    console.log('Korobka dostigla finisha!');
+                } else {
+                    Level[nextBoxIndex] = box; // просто перемещаем коробку
+                }
+
                 updateSquare(currentPlayerIndex);
                 updateSquare(targetIndex);
                 updateSquare(nextBoxIndex);
-
-               
-                if (Level[nextBoxIndex] === finish) {
-                    console.log('Korobka dostigla finisha!');
-                    
-                }
             } else {
                 console.log('Korobka vo chto-to uperlas!');
             }
         },
-        [finish]: () => { // Если игрок пытается двигаться на финиш
+        [finish]: () => {
             console.log('nelza zanat` etu oblast!');
+        },
+        [boxFinished]: () => {
+            console.log('Korobka uje na finisha i ne mozhno dvigat` ee!');
         }
     };
 
@@ -117,6 +126,25 @@ function movePlayer(step) { // движение игрока
     }
 }
 
-document.addEventListener('keydown', (event) => { // event listener для прослушки нажатий кнопок
-    movePlayer(event.key); // вызов функции для обработки движений
+
+document.addEventListener('keydown', (event) => {
+    movePlayer(event.key);
+    scounter(event);
+     // Передаем весь объект event
 });
+
+
+
+
+
+let count = 0;
+const counter = document.getElementById('steps');
+
+function scounter(){
+    count++;
+
+    counter.textContent = count;
+
+};
+
+
