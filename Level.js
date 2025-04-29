@@ -18,10 +18,22 @@ const Level = [
     wall, wall, wall, wall, wall, wall, wall, wall, wall,
 ];  // сам уровень
 
+const Level2 = [
+    wall, wall, wall, wall, wall, wall, wall, wall, wall,
+    wall, player, empty, empty, wall, empty, empty, finish, wall,
+    wall, empty, empty, empty, wall, empty, empty, empty, wall,
+    wall, empty, wall, empty, wall, empty, wall, box, wall,
+    wall, empty, wall, empty, empty, empty, empty, empty, wall,
+    wall, empty, wall, box, wall, wall, finish, wall, wall,
+    wall, empty, empty, empty, empty, empty, empty, empty, wall,
+    wall, wall, wall, empty, empty, empty, empty, wall, wall,
+    wall, wall, wall, wall, wall, wall, wall, wall, wall,
+];
+
 const board = document.getElementById('gamelevel'); // получение элемента gamelevel из html документа
 
 function drawSquare(index) { // функция для построения сетки уровня
-    const sqDiv = document.createElement('div'); // создает div и на основе элемента в массива, ставит в div соответствующий элемент
+    const sqDiv = document.createElement('div');
     switch (Level[index]) {
         case wall:
             sqDiv.classList.add('wall');
@@ -55,12 +67,14 @@ function drawLevel() { // callback функция отрисовки уровн�
 drawLevel();
 
 function updateSquare(index) { // Функция для обновления ячеек
-    const currentSquare = board.childNodes[index]; // получение состояния по индексу ячейки
-    currentSquare.replaceWith(drawSquare(index)); // её замена 
+    const currentSquare = board.childNodes[index];
+    currentSquare.replaceWith(drawSquare(index));
 }
 
+let finishedBoxesCount = 0; // Счетчик для коробок, достигнувших финиша
+
 function movePlayer(step) { // движение игрока
-    const currentPlayerIndex = Level.indexOf(player); // получение актуального индекса
+    const currentPlayerIndex = Level.indexOf(player);
     let targetIndex;
 
     switch (step) {
@@ -81,9 +95,8 @@ function movePlayer(step) { // движение игрока
             return;
     }
 
-
-    const targetCell = Level[targetIndex]; // определение целевой ячейки
-    const nextBoxIndex = targetIndex + (targetIndex - currentPlayerIndex); // вычисление индекса ячейки, в которую будет перемещена коробка
+    const targetCell = Level[targetIndex];
+    const nextBoxIndex = targetIndex + (targetIndex - currentPlayerIndex);
 
     const actions = {
         [empty]: () => {
@@ -98,55 +111,82 @@ function movePlayer(step) { // движение игрока
                 Level[targetIndex] = player; 
 
                 if (Level[nextBoxIndex] === finish) {
-                    Level[nextBoxIndex] = boxFinished; // клетка куда будет перемещена коробка заменяется на boxFinished
+                    Level[nextBoxIndex] = boxFinished; 
+                    finishedBoxesCount++; // Увеличиваем счетчик коробок на финише
                     console.log('Korobka dostigla finisha!');
                 } else {
-                    Level[nextBoxIndex] = box; // просто перемещаем коробку
+                    Level[nextBoxIndex] = box;
                 }
 
                 updateSquare(currentPlayerIndex);
                 updateSquare(targetIndex);
                 updateSquare(nextBoxIndex);
+
+                checkLevelCompletion(); 
             } else {
                 console.log('Korobka vo chto-to uperlas!');
             }
         },
         [finish]: () => {
-            console.log('nelza zanat` etu oblast!');
+            console.log('Nelza zanat` etu oblast!');
         },
         [boxFinished]: () => {
             console.log('Korobka uje na finisha i ne mozhno dvigat` ee!');
         }
     };
 
-    if (actions[targetCell]) { // проверка, существует ли действие targetCell
+    if (actions[targetCell]) {
         actions[targetCell]();
     } else {
         console.log('Nevozmojno dvigatsa(((');
     }
 }
 
+function checkLevelCompletion() {
+    if (finishedBoxesCount === 2) { // Если обе коробки на финише
+        CompleteMsg();
+    }
+}
+
+function CompleteMsg() {//Вывод сообщения
+    const message = document.createElement('div');
+    message.textContent = 'Level Complete!';
+    message.classList.add('level-complete');
+    const button = document.createElement('button');
+    button.textContent = 'Next Level'; // Текст на кнопке
+    button.classList.add('levels-button');
+    document.body.appendChild(message); 
+    document.body.appendChild(button);
+
+
+    button.addEventListener('click', () => {
+       
+        Level.length = 0; 
+        Level.push(...Level2); 
+        finishedBoxesCount = 0; 
+        drawLevel();
+        count = 0; 
+        counter.textContent = count;
+        resetTimer();
+        startTimer();     
+
+    });
+
+
+
+}
 
 document.addEventListener('keydown', (event) => {
     movePlayer(event.key);
     scounter(event);
-     // Передаем весь объект event
 });
-
-
-
-
 
 let count = 0;
 const counter = document.getElementById('steps');
 
 function scounter(){
     if (event.key.startsWith('Arrow')){
-    count++;
-
-    counter.textContent = count;
+        count++;
+        counter.textContent = count;
+    }
 }
-
-};
-
-
