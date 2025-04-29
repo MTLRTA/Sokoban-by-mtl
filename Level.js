@@ -28,7 +28,7 @@ const Level2 = [
     wall, empty, empty, empty, empty, empty, empty, empty, wall,
     wall, wall, wall, empty, empty, empty, empty, wall, wall,
     wall, wall, wall, wall, wall, wall, wall, wall, wall,
-];
+];  
 
 const board = document.getElementById('gamelevel'); // получение элемента gamelevel из html документа
 
@@ -57,7 +57,7 @@ function drawSquare(index) { // функция для построения се�
     return sqDiv;
 }
 
-function drawLevel() { // callback функция отрисовки уровня
+function drawLevel() { // функция отрисовки уровня
     board.innerHTML = ''; // очистка уровня
     for (let i = 0; i < Level.length; i++) {
         board.appendChild(drawSquare(i));
@@ -112,7 +112,7 @@ function movePlayer(step) { // движение игрока
 
                 if (Level[nextBoxIndex] === finish) {
                     Level[nextBoxIndex] = boxFinished; 
-                    finishedBoxesCount++; // Увеличиваем счетчик коробок на финише
+                    finishedBoxesCount++; // Увеличивается счетчик коробок на финише
                     console.log('Korobka dostigla finisha!');
                 } else {
                     Level[nextBoxIndex] = box;
@@ -160,7 +160,9 @@ function CompleteMsg() {//Вывод сообщения
 
 
     button.addEventListener('click', () => {
-       
+        
+        message.remove();
+        button.remove();
         Level.length = 0; 
         Level.push(...Level2); 
         finishedBoxesCount = 0; 
